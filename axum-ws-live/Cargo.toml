@@ -1,0 +1,4 @@
+[workspace]
+resolver = "2" # https://doc.rust-lang.org/cargo/reference/resolver.html
+
+members = ["ws-server", "ws-shared"]
