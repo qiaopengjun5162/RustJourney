@@ -1,0 +1,31 @@
+GET http://localhost:8000/ HTTP/1.1
+
+### 
+// todos_handler
+GET http://localhost:8000/todos HTTP/1.1
+
+###
+POST http://localhost:8000/todos HTTP/1.1
+content-type: application/json
+
+{
+    "title": "larry"
+}
+
+###
+POST http://localhost:8000/login HTTP/1.1
+content-type: application/json
+
+{
+    "email": "xiaoqiao@gmail.com",
+    "password": "123456"
+}
+
+###
+POST http://localhost:8000/todos HTTP/1.1
+content-type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6IlhpYW8gUWlhbyIsImV4cCI6MTY5NDk0NDQzNH0.FhUtNuyUtCA-gtMckc3UkvTu3Z2Ek8DYH1lg8PNXDmk
+
+{
+    "title": "hello world"
+}
