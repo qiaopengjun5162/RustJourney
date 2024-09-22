@@ -1,0 +1,25 @@
+## Quick Dev
+
+GET http://127.0.0.1:8080/ HTTP/1.1
+
+### hi
+GET http://127.0.0.1:8080/hi/111 HTTP/1.1
+
+### index.html
+# GET http://127.0.0.1:8080/index.html HTTP/1.1
+GET http://127.0.0.1:8080/ HTTP/1.1
+
+### todos
+# GET http://127.0.0.1:8080/todos/ HTTP/1.1
+GET http://127.0.0.1:8080/todos/111 HTTP/1.1
+X-Auth-Token: 123.exp.signature
+
+### create
+POST http://127.0.0.1:8080/todos HTTP/1.1
+Content-Type: application/json
+X-Auth-Token: 123.exp.signature1
+
+{
+    "name": "test",
+    "content": "test content"
+}
