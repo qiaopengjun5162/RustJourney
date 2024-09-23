@@ -1,0 +1,23 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Cortex Debug",
+            "cwd": "${workspaceFolder}",
+            // "executable": "./bin/executable.elf",
+            "executable": "./target/thumbv7em-none-eabihf/debug/gd32demo",
+            "request": "launch",
+            "type": "cortex-debug",
+            "runToEntryPoint": "main",
+            // "servertype": "jlink",
+            "servertype": "openocd",
+            "configFiles": [
+                "openocd.cfg"
+            ],
+            "svdFile": "./GD32F30x_HD.svd",
+        }
+    ]
+}
