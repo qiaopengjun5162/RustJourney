@@ -1,0 +1,31 @@
+// 双斜线和/**/是注释语法
+
+
+// 指定协议版本，必须写在非注释行的第一行
+syntax = "proto3";
+
+// 指定该文件的包名
+package abi;
+
+// message定义类型，编译后一般转换为对应语言的Struct或某种Class类型
+message Request {
+    oneof command {
+        RequestGet get = 1;
+        RequestPut put = 2;
+    }
+}
+
+message Response {
+    uint32 code = 1;
+    string Key = 2;
+    bytes value = 3;
+}
+
+message RequestGet {
+    string Key = 1;
+}
+
+message RequestPut {
+    string Key = 1;
+    bytes value = 2;
+}
