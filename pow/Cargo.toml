@@ -1,0 +1,29 @@
+[package]
+name = "pow"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[[bin]]
+name = "server"
+path = "src/server.rs"
+
+[[bin]]
+name = "client"
+path = "src/client.rs"
+
+[dependencies]
+prost = "0.11.9"
+tonic = "0.9.2"
+tokio ={ version = "1.29.1", features = ["sync", "rt-multi-thread", "macros"]}
+futures = "0.3.28"
+tokio-stream = "0.1.14"
+anyhow = "1.0.72"
+blake3 = "1.4.1"
+hex = "0.4.3"
+rayon = "1.7.0"
+
+[build-dependencies]
+tonic-build = "0.9.2"
+
