@@ -1,0 +1,10 @@
+[package]
+name = "tlearn"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+winapi = "0.2" # 定义一些有用的类型别名，对所有 Windows API 的原始的 FFI 绑定
+kernel32-sys = "0.2" # 提供与 KERNEL.DLL 的交互，包含 Windows API 库 Kernel32 的函数定义
