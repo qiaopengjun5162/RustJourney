@@ -1,35 +1,65 @@
 use std::{
-    sync::{Arc, RwLock},
+    sync::{
+        OnceLock,
+        atomic::{AtomicU32, Ordering},
+    },
     thread,
 };
 
+static LIST: OnceList<u32> = OnceList::new();
+static COUNTER: AtomicU32 = AtomicU32::new(0);
+
+const LEN: u32 = 1000;
+
 fn main() {
-    let counter = Arc::new(RwLock::new(0));
+    thread::scope(|s| {
+        for _ in 0..thread::available_parallelism().unwrap().get() {
+            s.spawn(|| {
+                while let i @ 0..LEN = COUNTER.fetch_add(1, Ordering::Relaxed) {
+                    LIST.push(i);
+                }
+            });
+        }
+    });
 
-    let mut handles = vec![];
+    for i in 0..LEN {
+        assert!(LIST.contains(&i));
+    }
+}
 
-    for i in 0..10 {
-        let counter = Arc::clone(&counter);
-        let handle = thread::spawn(move || {
-            let value = counter.read().unwrap();
-            println!("Thread {i} read the value {value}");
-        });
-        handles.push(handle);
+struct OnceList<T> {
+    data: OnceLock<T>,
+    next: OnceLock<Box<OnceList<T>>>,
+}
+
+impl<T> OnceList<T> {
+    const fn new() -> OnceList<T> {
+        OnceList {
+            data: OnceLock::new(),
+            next: OnceLock::new(),
+        }
     }
 
+    fn push(&self, value: T) {
+        if let Err(value) = self.data.set(value) {
+            let next = self.next.get_or_init(|| Box::new(OnceList::new()));
+            next.push(value);
+        }
+    }
+
+    fn contains(&self, example: &T) -> bool
+    where
+        T: PartialEq<T>,
     {
-        let counter = Arc::clone(&counter);
-        let handle = thread::spawn(move || {
-            let mut value = counter.write().unwrap();
-            *value += 1;
-            println!("Thread wrote the value {value}");
-        });
-        handles.push(handle);
+        self.data
+            .get()
+            .map(|value| value == example)
+            .filter(|v| *v)
+            .unwrap_or_else(|| {
+                self.next
+                    .get()
+                    .map(|next| next.contains(example))
+                    .unwrap_or(false)
+            })
     }
-
-    handles
-        .into_iter()
-        .for_each(|handle| handle.join().unwrap());
-
-    println!("Result: {}", *counter.read().unwrap());
 }
